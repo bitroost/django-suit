@@ -1,3 +1,4 @@
+import sys
 from django import get_version
 from django.apps import AppConfig
 from django.contrib.admin.options import ModelAdmin
@@ -21,7 +22,11 @@ class DjangoSuitConfig(AppConfig):
     name = 'suit'
     verbose_name = 'Django Suit'
     django_version = get_version()
+    py_version = '{s[0]}.{s[1]}.{s[2]} {s[3]}'.format(s=list(sys.version_info))
     version = VERSION
+
+    # Display Version Information
+    display_version_info = True
 
     # Menu and header layout - horizontal or vertical
     layout = 'horizontal'
