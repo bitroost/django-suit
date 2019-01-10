@@ -9,7 +9,9 @@
             {% if forloop.first %}
                 <h2>{% trans 'Filter' %}</h2>
             {% endif %}
+            <div class="filter">
             {% admin_list_filter cl spec %}
+            </div>
         {% endfor %}</div>
     {% endif %}
 {% endblock %}
