@@ -26,9 +26,6 @@ urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
 
-    # Django-Select2
-    url(r'^select2/', include('django_select2.urls')),
-
     # Documentation url for menu documentation link
     url(r'^admin/custom2/', RedirectView.as_view(url='http://djangosuit.com/support/'), name='django-admindocs-docroot'),
 
