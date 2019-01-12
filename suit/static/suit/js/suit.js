@@ -55,37 +55,36 @@ window.Suit = Suit;
 
 
     Suit.FixedBar = function () {
-        var didScroll = false, $fixedItem, $fixedItemParent, $win, $body,
-            itemOffset,
-            extraOffset = 0,
+        var $fixedItem, $fixedItemParent, $win;
+        var itemOffset = false,
+            extraOffset = 100,
+            maxWidth = 540,
             fixed = false;
 
         function init(selector) {
             $fixedItem = $(selector || '.submit-row');
-            if (!$fixedItem.length)
+            if (!$fixedItem.length) {
                 return;
-
+            }
             $fixedItemParent = $fixedItem.parents('form');
-            itemOffset = $fixedItem.offset();
             $win = $(window);
             window.onscroll = onScroll;
             window.onresize = onScroll;
-            onScroll();
 
-            setInterval(function () {
-                if (didScroll) {
-                    didScroll = false;
-                }
-            }, 200);
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    itemOffset = $('.submit-row').offset().top;
+                    onScroll();
+                }, 50);
+            }, {once: true});
         }
 
         function onScroll() {
-            didScroll = true;
+            var scrollTop = $win.scrollTop(),
+                itemHeight = $fixedItem.height();
 
-            var itemHeight = $fixedItem.height(),
-                scrollTop = $win.scrollTop();
-
-            if (scrollTop + $win.height() - itemHeight - extraOffset < itemOffset.top) {
+            // console.log('$win.height() + scrollTop', $win.height() + scrollTop + extraOffset, itemOffset);
+            if (itemOffset && $win.width() < maxWidth && ($win.height() + scrollTop + extraOffset < itemOffset)) {
                 if (!fixed) {
                     $fixedItem.addClass('fixed');
                     $fixedItemParent.addClass('fixed').css('padding-bottom', itemHeight + 'px');
