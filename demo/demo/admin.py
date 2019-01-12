@@ -1,18 +1,18 @@
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib import admin
+from django.urls import reverse
+from django.utils.html import format_html
 from django.forms import ModelForm, Select, TextInput, NumberInput
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.shortcuts import redirect
-from django_select2.forms import ModelSelect2Widget
 from suit import apps
 
 from suit.admin import RelatedFieldAdmin, get_related_field
 from suit.admin_filters import IsNullFieldListFilter
 from suit.sortables import SortableTabularInline, SortableModelAdmin, SortableStackedInline
 from suit.widgets import AutosizedTextarea, EnclosedInput
-from .widgets import Bootstrap4Select
 from .models import *
 from .views import *
 
@@ -119,6 +119,9 @@ class CountryAdmin(RelatedFieldAdmin):
         ('admin/demo/country/tab_docs.html', '', 'info'),
     )
 
+    def link_to_continent(self, obj):
+        link = reverse('admin:%s_%s_change' % (obj.continent._meta.app_label,  obj.continent._meta.model_name),  args=[obj.continent.id] )
+        return format_html(u'<a href="{}" class="link-with-icon">{}<i class="fa fa-caret-right"></i></a>'.format(link, obj.continent.name))
 
 # Inlines for ContinentAdmin
 class CountryInlineForm(ModelForm):
@@ -207,13 +210,6 @@ class MovieInline(SortableStackedInline):
     }
 
 
-class CountrySelect2Widget(Bootstrap4Select, ModelSelect2Widget):
-    search_fields = [
-        'name__icontains',
-        'code__iexact',
-    ]
-
-
 class ColorInput(TextInput):
     input_type = 'color'
 
@@ -228,8 +224,7 @@ class ShowcaseForm(ModelForm):
             'html5_color': ColorInput,
             'html5_number': NumberInput,
             'html5_date': DateInput,
-            'textfield': AutosizedTextarea,
-            'country2': CountrySelect2Widget()
+            'textfield': AutosizedTextarea
         }
 
 
