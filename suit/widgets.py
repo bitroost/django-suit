@@ -14,7 +14,13 @@ class AutosizedTextarea(Textarea):
 
     @property
     def media(self):
-        return forms.Media(js=('suit/js/autosize.min.js',))
+        return forms.Media(
+            js=[
+                'admin/js/vendor/jquery/jquery.js',
+                'admin/js/jquery.init.js',
+                'suit/js/autosize.min.js',
+            ]
+        )
 
     def render(self, name, value, attrs=None, renderer=None):
         output = super(AutosizedTextarea, self).render(name, value, attrs)

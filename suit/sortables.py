@@ -13,7 +13,11 @@ class SortableModelAdminBase(object):
     sortable = 'order'
 
     class Media:
-        js = ('suit/js/suit.sortables.js',)
+        js = [
+            'admin/js/vendor/jquery/jquery.js',
+            'admin/js/jquery.init.js',
+            'suit/js/suit.sortables.js',
+        ]
 
 
 class SortableListForm(ModelForm):
